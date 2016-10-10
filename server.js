@@ -13,6 +13,7 @@ const bluebird = require('bluebird');
 //initialize express
 const app = express();
 
+
 //use body parser to get post data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -27,7 +28,7 @@ app.use(function(req, res, next) {
 });
 
 //Mongodb connection
-mongoose.promise = bluebird;
+mongoose.Promise = bluebird;
 mongoose.connect(config.database);
 let connection = mongoose.connection;
 
@@ -44,9 +45,11 @@ app.use(express.static(__dirname+'/public'));
 
 //Routes
 var routes = require('./routes/catalog_routes')(app,express);
+var open_routes = require('./routes/open_routes')(app,express);
 
 //Register the routes
 app.use('/catalog',routes);
+app.use('/open',open_routes);//non authenicated routes
 
 
 //catch all route
