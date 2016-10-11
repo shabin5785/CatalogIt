@@ -44,11 +44,11 @@ app.use(express.static(__dirname+'/public'));
 
 
 //Routes
-var routes = require('./routes/catalog_routes')(app,express);
+var book_routes = require('./routes/book_routes')(app,express);
 var open_routes = require('./routes/open_routes')(app,express);
 
 //Register the routes
-app.use('/catalog',routes);
+app.use('/catalog/book',book_routes);
 app.use('/open',open_routes);//non authenicated routes
 
 
