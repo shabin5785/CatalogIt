@@ -1,13 +1,13 @@
-let models = require('../models/catalog');
+const models = require('../models/catalog');
 const config = require('config');
 const Book = models.book;
 
 module.exports = function(app,express){
 
-	const catRouter = express.Router();
+	const bookRouter = express.Router();
 
 	
-	catRouter.route('/single')
+	bookRouter.route('/single')
 		.post(function(req,res){ //add book
 
 			let book = new Book();
@@ -35,7 +35,6 @@ module.exports = function(app,express){
 						res.json({status:false,error:'No book found'})
 					}
 					else{
-						console.log(">>> "+bok);
 						//book to update found
 						if(req.body.title) bok.title = req.body.title;
 						if(req.body.author) bok.author = req.body.author;
@@ -57,15 +56,15 @@ module.exports = function(app,express){
 				})
 		});
 
-		catRouter.route('/single/:bookid')
+		bookRouter.route('/single/:bookid')
 			.get(function(req,res){ //get a single book
 				Book.findById(req.params.bookid)
-					.then(function(book){
-						if(!book){
+					.then(function(bok){
+						if(!bok){
 							res.json({status:false,error:'No book found'})
 						}
 						else{
-							res.json(book);
+							res.json(bok);
 						}
 					})
 					.catch(function(err){
@@ -76,12 +75,12 @@ module.exports = function(app,express){
 
 			.delete(function(req,res){ //delete book
 				Book.remove({_id: req.params.bookid})
-					.then(function(book){
-						if(!book){
+					.then(function(bok){
+						if(!bok){
 							res.json({status:false,error:'No book found'})
 						}
 						else{
-							res.json({status:true,book:book.name})
+							res.json({status:true,book:bok.name})
 						}
 					})
 					.catch(function(err){
@@ -90,7 +89,7 @@ module.exports = function(app,express){
 					})
 			});
 
-		catRouter.route('/all')
+		bookRouter.route('/all')
 			.get(function(req,res){ //get all books
 				Book.find({})
 					.then(function(books){
@@ -104,5 +103,5 @@ module.exports = function(app,express){
 
 	
 
-	return catRouter;
+	return bookRouter;
 }

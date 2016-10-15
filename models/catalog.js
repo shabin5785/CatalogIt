@@ -41,7 +41,6 @@ let seriesSchema = new Schema({
 	_user: {type:String, ref: 'User'},
 	title : {type:String, required:true, index: { unique: true }},
 	genre : {type:String, index: true },
-	series: {type:String},
 	fullInCollection : Boolean,
 	seasons : [seasonSchema]
 })
@@ -101,10 +100,12 @@ let b = mongoose.model('Book', bookSchema);
 let u = mongoose.model('User', userSchema);
 let m = mongoose.model('Movie', movieSchema);
 let s = mongoose.model('Series', seriesSchema);
+let x = mongoose.model('Season', seasonSchema);
 
 module.exports = {
     user: u,
     book: b,
     movie: m,
-    series: s
+    series: s,
+    season : x
 };
