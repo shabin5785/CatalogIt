@@ -37,7 +37,7 @@ module.exports = function(app,express){
 						if(req.body.genre) ser.genre = req.body.genre;
 						ser.save()
 							.then(function(ser){
-								res.json({status:true,movie:ser.title});
+								res.json({status:true,series:ser.title});
 							})
 							.catch(function(err){
 								console.log(err);
@@ -84,16 +84,49 @@ module.exports = function(app,express){
 
 			})
 
-			//to do rest
+			.put(function(req,res){//update a season
+				//find the series
+				Series.findOne({_id:seriesid}).exec()
+					.then(function(ser){
+						if(!ser){//Series not found
+							res.json({status:false,error:'No Series found'})
+						}
+						else{//series found. Now get season from that
+							let seasonid = req.body.seasonid;
+							let sea = ser.seasons.id(seasonid);
+							if(!sea){//Season not found
+								res.json({status:false,error:'No Season found'})
+							}
+							else{
+								if(req.body.noOfEpisodes)season.noOfEpisodes = req.body.noOfEpisodes;
+								if(req.body.inCollection)season.inCollection = req.body.inCollection;
+								ser.save()
+									.then(function(serUpd){
+										res.json({status:true,series:serUpd.title});
+									})
+									.catch(function(err){
+										console.log(err);
+										res.send(err);
+									})
+							}
+						}
 
-			.get(function(req,res){ //get a single movie
-				Movie.findById(req.params.movieid)
-					.then(function(mov){
-						if(!mov){
-							res.json({status:false,error:'No movie found'})
+					})
+					.catch(function(err){
+						console.log(err);
+						res.send(err);
+					})
+
+			})
+
+			.get(function(req,res){ //get a single series
+				Series.findById(req.params.seriesid)
+					.then(function(ser){
+						if(!ser){
+							res.json({status:false,error:'No Series found'})
 						}
 						else{
-							res.json(mov);
+							res.json(ser);
 						}
 					})
 					.catch(function(err){
@@ -102,14 +135,14 @@ module.exports = function(app,express){
 					})
 			})
 
-			.delete(function(req,res){ //delete movie
-				Movie.remove({_id: req.params.movieid})
-					.then(function(mov){
-						if(!mov){
-							res.json({status:false,error:'No movie found'})
+			.delete(function(req,res){ //delete series
+				Series.remove({_id: req.params.seriesid})
+					.then(function(ser){
+						if(!ser){
+							res.json({status:false,error:'No series found'})
 						}
 						else{
-							res.json({status:true,movie:mov.name})
+							res.json({status:true,series:ser.name})
 						}
 					})
 					.catch(function(err){
@@ -118,11 +151,70 @@ module.exports = function(app,express){
 					})
 			});
 
+		seriesRouter.route('/single/:seriesid/:seasonid')
+			.get(function(req,res){ //get single season of a series
+				//find the series
+				Series.findOne({_id:seriesid}).exec()
+					.then(function(ser){
+						if(!ser){//Series not found
+							res.json({status:false,error:'No Series found'})
+						}
+						else{//series found. Now get season from that
+							let seasonid = req.body.seasonid;
+							let sea = ser.seasons.id(seasonid);
+							if(!sea){//Season not found
+								res.json({status:false,error:'No Season found'})
+							}
+							else{
+								res.json(sea);
+							}
+						}
+
+					})
+					.catch(function(err){
+						console.log(err);
+						res.send(err);
+					})
+			})
+
+			.delete(function(req,res){//delete single season
+				//find the series
+				Series.findOne({_id:seriesid}).exec()
+					.then(function(ser){
+						if(!ser){//Series not found
+							res.json({status:false,error:'No Series found'})
+						}
+						else{//series found. Now get season from that
+							let seasonid = req.body.seasonid;
+							let sea = ser.seasons.id(seasonid).remove();
+							if(!sea){
+								res.json({status:false,error:'No Season found'})
+							}
+							else{
+								ser.save()
+									.then(function(serUpd){
+										res.json({status:true,series:serUpd.title})
+									})
+									.catch(function(err){
+										console.log(err);
+										res.send(err);
+									})
+							}
+						}
+
+					})
+					.catch(function(err){
+						console.log(err);
+						res.send(err);
+					})
+			})
+
+
 		seriesRouter.route('/all')
-			.get(function(req,res){ //get all movies
-				Movie.find({})
-					.then(function(movies){
-						res.json(movies);
+			.get(function(req,res){ //get all series
+				Series.find({})
+					.then(function(serieses){
+						res.json(serieses);
 					})
 					.catch(function(err){
 						console.log(err);
