@@ -20,7 +20,7 @@ module.exports = function(app,express){
 			movie.inCollection = true;
 			movie.save()
 				.then(function(mov){
-					res.json({status:true,movie:mov.title});
+					res.json({status:true,movie:mov.title,id:mov._id});
 				})
 				.catch(function(err){
 					console.log(err);
@@ -42,7 +42,7 @@ module.exports = function(app,express){
 						if(req.body.inCollection) mov.inCollection = req.body.inCollection;
 						mov.save()
 							.then(function(mov){
-								res.json({status:true,movie:mov.title});
+								res.json({status:true,movie:mov.title,id:mov._id});
 							})
 							.catch(function(err){
 								console.log(err);
@@ -80,7 +80,7 @@ module.exports = function(app,express){
 							res.json({status:false,error:'No movie found'})
 						}
 						else{
-							res.json({status:true,movie:mov.name})
+							res.json({status:true,movie:mov.name,id:mov._id})
 						}
 					})
 					.catch(function(err){

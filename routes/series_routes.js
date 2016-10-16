@@ -17,7 +17,7 @@ module.exports = function(app,express){
 			}
 			series.save()
 				.then(function(ser){
-					res.json({status:true,series:ser.title});
+					res.json({status:true,series:ser.title,id:ser._id});
 				})
 				.catch(function(err){
 					console.log(err);
@@ -37,7 +37,7 @@ module.exports = function(app,express){
 						if(req.body.genre) ser.genre = req.body.genre;
 						ser.save()
 							.then(function(ser){
-								res.json({status:true,series:ser.title});
+								res.json({status:true,series:ser.title,id:ser._id});
 							})
 							.catch(function(err){
 								console.log(err);
@@ -68,7 +68,7 @@ module.exports = function(app,express){
 							ser.seasons.push(season);
 							ser.save()
 								.then(function(serNew){
-									res.json({status:true,series:serNew.title,season:req.body.seasonid});
+									res.json({status:true,series:serNew.title,season:req.body.seasonid,id:serNew._id});
 								})
 								.catch(function(err){
 									console.log(err);
@@ -102,7 +102,7 @@ module.exports = function(app,express){
 								if(req.body.inCollection)sea.inCollection = req.body.inCollection;
 								ser.save()
 									.then(function(serUpd){
-										res.json({status:true,series:serUpd.title});
+										res.json({status:true,series:serUpd.title,id:serUpd._id});
 									})
 									.catch(function(err){
 										console.log(err);
@@ -142,7 +142,7 @@ module.exports = function(app,express){
 							res.json({status:false,error:'No series found'})
 						}
 						else{
-							res.json({status:true,series:ser.name})
+							res.json({status:true,series:ser.name,id:ser._id})
 						}
 					})
 					.catch(function(err){
@@ -193,7 +193,7 @@ module.exports = function(app,express){
 							else{
 								ser.save()
 									.then(function(serUpd){
-										res.json({status:true,series:serUpd.title})
+										res.json({status:true,series:serUpd.title,id:serUpd._id})
 									})
 									.catch(function(err){
 										console.log(err);

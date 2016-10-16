@@ -19,8 +19,8 @@ module.exports = function(app,express){
 			}
 			book.inCollection = true;
 			book.save()
-				.then(function(book){
-					res.json({status:true,book:book.title});
+				.then(function(bok){
+					res.json({status:true,book:bok.title,id:bok._id});
 				})
 				.catch(function(err){
 					console.log(err);
@@ -42,7 +42,7 @@ module.exports = function(app,express){
 						if(req.body.inCollection) bok.inCollection = req.body.inCollection;
 						bok.save()
 							.then(function(bok){
-								res.json({status:true,book:bok.title});
+								res.json({status:true,book:bok.title,id:bok._id});
 							})
 							.catch(function(err){
 								console.log(err);
@@ -80,7 +80,7 @@ module.exports = function(app,express){
 							res.json({status:false,error:'No book found'})
 						}
 						else{
-							res.json({status:true,book:bok.name})
+							res.json({status:true,book:bok.name,id:bok._id})
 						}
 					})
 					.catch(function(err){
