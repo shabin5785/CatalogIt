@@ -54,7 +54,7 @@ module.exports = function(app,express){
 		seriesRouter.route('/single/:seriesid')
 			.post(function(req,res){ //add a season to a series
 				//first get the series
-				Series.findOne({_id:seriesid}).exec()
+				Series.findOne({_id:req.params.seriesid}).exec()
 					.then(function(ser){
 						if(!ser){//Series not found
 							res.json({status:false,error:'No Series found'})
@@ -62,8 +62,8 @@ module.exports = function(app,express){
 						else{//series found. Add season to it
 							let season = new Season();
 							season._id = req.body.seasonid;
-							season.noOfEpisodes = req.body.noOfEpisodes;
-							season.inCollection = req.body.inCollection;
+							if(req.body.noOfEpisodes) season.noOfEpisodes = req.body.noOfEpisodes;
+							if(req.body.inCollection) season.inCollection = req.body.inCollection;
 
 							ser.seasons.push(season);
 							ser.save()
@@ -86,7 +86,7 @@ module.exports = function(app,express){
 
 			.put(function(req,res){//update a season
 				//find the series
-				Series.findOne({_id:seriesid}).exec()
+				Series.findOne({_id:req.params.seriesid}).exec()
 					.then(function(ser){
 						if(!ser){//Series not found
 							res.json({status:false,error:'No Series found'})
@@ -98,8 +98,8 @@ module.exports = function(app,express){
 								res.json({status:false,error:'No Season found'})
 							}
 							else{
-								if(req.body.noOfEpisodes)season.noOfEpisodes = req.body.noOfEpisodes;
-								if(req.body.inCollection)season.inCollection = req.body.inCollection;
+								if(req.body.noOfEpisodes)sea.noOfEpisodes = req.body.noOfEpisodes;
+								if(req.body.inCollection)sea.inCollection = req.body.inCollection;
 								ser.save()
 									.then(function(serUpd){
 										res.json({status:true,series:serUpd.title});
@@ -154,13 +154,13 @@ module.exports = function(app,express){
 		seriesRouter.route('/single/:seriesid/:seasonid')
 			.get(function(req,res){ //get single season of a series
 				//find the series
-				Series.findOne({_id:seriesid}).exec()
+				Series.findOne({_id:req.params.seriesid}).exec()
 					.then(function(ser){
 						if(!ser){//Series not found
 							res.json({status:false,error:'No Series found'})
 						}
 						else{//series found. Now get season from that
-							let seasonid = req.body.seasonid;
+							let seasonid = req.params.seasonid;
 							let sea = ser.seasons.id(seasonid);
 							if(!sea){//Season not found
 								res.json({status:false,error:'No Season found'})
@@ -179,13 +179,13 @@ module.exports = function(app,express){
 
 			.delete(function(req,res){//delete single season
 				//find the series
-				Series.findOne({_id:seriesid}).exec()
+				Series.findOne({_id:req.params.seriesid}).exec()
 					.then(function(ser){
 						if(!ser){//Series not found
 							res.json({status:false,error:'No Series found'})
 						}
 						else{//series found. Now get season from that
-							let seasonid = req.body.seasonid;
+							let seasonid = req.params.seasonid;
 							let sea = ser.seasons.id(seasonid).remove();
 							if(!sea){
 								res.json({status:false,error:'No Season found'})
