@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const models = require('../models/catalog');
-const Book = models.book;
+const Movie = models.movie;
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -16,51 +16,51 @@ let id = '';
 let series = 'series';
 let wrongId = '123451ac93d97521e3712345';
 
-describe('Book' , function(){
+describe('Movie' , function(){
 
-	//remove Book test collection before test
+	//remove Movie test collection before test
 	before((done) => {
-		Book.remove({},(err) => {
+		Movie.remove({},(err) => {
 			done();
 		});
 
 	});
 
-	let book = {
+	let movie = {
 				title : 'title',
-				author : 'author'
+				genre : 'genre'
 			}
 
-	describe('Add a single book' , () => {
+	describe('Add a single movie ' , () => {
 
-		it('book without author will not be inserted' , (done) => {
+		it('movie without title will not be inserted' , (done) => {
 
-			let bok = {
-				title: 'title'
+			let mov = {
+				genre: 'genre'
 			}
 
 			chai.request(server)
-				.post('/catalog/book/single')
-				.send(bok)
+				.post('/catalog/movie/single')
+				.send(mov)
 				.end((err,res)=> {
 					res.should.have.status(200);
-					res.body.message.should.be.equal('Book validation failed');
+					res.body.message.should.be.equal('Movie validation failed');
 					res.body.errors.should.not.be.null;
-					res.body.errors.should.have.property('author');	
+					res.body.errors.should.have.property('title');	
 					done();
 				})
 		});
 
-		it('add a new book' , (done) => {
+		it('add a new movie' , (done) => {
 
 			chai.request(server)
-				.post('/catalog/book/single')
-				.send(book)
+				.post('/catalog/movie/single')
+				.send(movie)
 				.end((err,res) => {
 					res.should.have.status(200);
 					res.body.status.should.be.true;
-					res.body.should.have.property('book');
-					res.body.book.should.be.equal(book.title)
+					res.body.should.have.property('movie');
+					res.body.movie.should.be.equal(movie.title)
 					id = res.body.id;
 					done();
 				})
@@ -74,27 +74,27 @@ describe('Book' , function(){
 
 
 
-	describe('Update a single book',() => {
+	describe('Update a single movie',() => {
 
-		it('update without bookid should fail', (done)=>{
+		it('update without movieid should fail', (done)=>{
 			chai.request(server)
-			.put('/catalog/book/single')
+			.put('/catalog/movie/single')
 			.send({series:series})
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
-				res.body.error.should.be.equal('No Book found');
+				res.body.error.should.be.equal('No Movie found');
 				done();
 			})
 		});
 
-		it('successfull book update' , (done) => {
+		it('successfull movie update' , (done) => {
 			chai.request(server)
-			.put('/catalog/book/single')
+			.put('/catalog/movie/single')
 			.send({series:series,id:id})
 			.end((err,res) => {
 				res.should.have.status(200);
-				res.body.book.should.be.equal(book.title);
+				res.body.movie.should.be.equal(movie.title);
 				res.body.id.should.be.equal(id);
 				done();
 			});
@@ -103,28 +103,28 @@ describe('Book' , function(){
 	});
 
 
-	describe('get a single book' ,() => {
+	describe('get a single movie' ,() => {
 
 		it('request with wrong id should fail' ,(done) => {
 			chai.request(server)
-			.get('/catalog/book/single/'+wrongId)
+			.get('/catalog/movie/single/'+wrongId)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
-				res.body.error.should.be.equal('No Book found');
+				res.body.error.should.be.equal('No Movie found');
 				done();
 			})
 
 		});
 
-		it('get book should work',(done) => {
+		it('get movie should work',(done) => {
 			chai.request(server)
-			.get('/catalog/book/single/'+id)
+			.get('/catalog/movie/single/'+id)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body._id.should.be.equal(id);
-				res.body.author.should.be.equal(book.author);
-				res.body.title.should.be.equal(book.title);
+				res.body.genre.should.be.equal(movie.genre);
+				res.body.title.should.be.equal(movie.title);
 				res.body.series.should.be.equal(series);
 				res.body.inCollection.should.be.true;
 				done();
@@ -134,27 +134,27 @@ describe('Book' , function(){
 	});
 
 
-	describe('get all books should work', () => {
-		//insert one more book
+	describe('get all movies should work', () => {
+		//insert one more movie
 
-		it('add second book' , (done) => {
+		it('add second movie' , (done) => {
 
 			chai.request(server)
-				.post('/catalog/book/single')
-				.send({title:'second',author:'second'})
+				.post('/catalog/movie/single')
+				.send({title:'second',genre:'second'})
 				.end((err,res) => {
 					res.should.have.status(200);
 					res.body.status.should.be.true;
-					res.body.should.have.property('book');
+					res.body.should.have.property('movie');
 					done();
 				});
 			
 		});
 
-		it('get all books should work', (done) => {
+		it('get all movies should work', (done) => {
 
 			chai.request(server)
-			.get('/catalog/book/all')
+			.get('/catalog/movie/all')
 			.send()
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -165,14 +165,14 @@ describe('Book' , function(){
 
 	});
 
-	describe('delete single book ', () => {
+	describe('delete single movie ', () => {
 		it('request with wrong id should not work' ,(done) => {
 			chai.request(server)
-			.delete('/catalog/book/single/'+wrongId)
+			.delete('/catalog/movie/single/'+wrongId)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.true;
-				res.body.should.not.have.property('book');
+				res.body.should.not.have.property('movie');
 				done();
 			})
 
@@ -180,7 +180,7 @@ describe('Book' , function(){
 
 		it('request with correct id should work' ,(done) => {
 			chai.request(server)
-			.delete('/catalog/book/single/'+id)
+			.delete('/catalog/movie/single/'+id)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -189,10 +189,10 @@ describe('Book' , function(){
 
 		});
 
-		it('get all books should return only one', (done) => {
+		it('get all movies should return only one', (done) => {
 
 			chai.request(server)
-			.get('/catalog/book/all')
+			.get('/catalog/movie/all')
 			.send()
 			.end((err,res) => {
 				res.should.have.status(200);

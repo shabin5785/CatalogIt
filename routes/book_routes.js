@@ -32,7 +32,7 @@ module.exports = function(app,express){
 			Book.findOne({_id:req.body.id}).exec()
 				.then(function(bok){
 					if(!bok){//book not found
-						res.json({status:false,error:'No book found'})
+						res.json({status:false,error:'No Book found'})
 					}
 					else{
 						//book to update found
@@ -61,7 +61,7 @@ module.exports = function(app,express){
 				Book.findById(req.params.bookid)
 					.then(function(bok){
 						if(!bok){
-							res.json({status:false,error:'No book found'})
+							res.json({status:false,error:'No Book found'})
 						}
 						else{
 							res.json(bok);
@@ -77,7 +77,7 @@ module.exports = function(app,express){
 				Book.remove({_id: req.params.bookid})
 					.then(function(bok){
 						if(!bok){
-							res.json({status:false,error:'No book found'})
+							res.json({status:false,error:'No Book found'})
 						}
 						else{
 							res.json({status:true,book:bok.name,id:bok._id})

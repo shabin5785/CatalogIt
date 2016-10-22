@@ -61,7 +61,7 @@ module.exports = function(app,express){
 				Movie.findById(req.params.movieid)
 					.then(function(mov){
 						if(!mov){
-							res.json({status:false,error:'No movie found'})
+							res.json({status:false,error:'No Movie found'})
 						}
 						else{
 							res.json(mov);
@@ -77,7 +77,7 @@ module.exports = function(app,express){
 				Movie.remove({_id: req.params.movieid})
 					.then(function(mov){
 						if(!mov){
-							res.json({status:false,error:'No movie found'})
+							res.json({status:false,error:'No Movie found'})
 						}
 						else{
 							res.json({status:true,movie:mov.name,id:mov._id})
