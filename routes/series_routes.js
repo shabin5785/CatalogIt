@@ -3,6 +3,7 @@ const config = require('config');
 const Series = models.series;
 const Season = models.season;
 
+
 module.exports = function(app,express){
 
 	const seriesRouter = express.Router();
@@ -186,11 +187,12 @@ module.exports = function(app,express){
 						}
 						else{//series found. Now get season from that
 							let seasonid = req.params.seasonid;
-							let sea = ser.seasons.id(seasonid).remove();
+							let sea = ser.seasons.id(seasonid);
 							if(!sea){
 								res.json({status:false,error:'No Season found'})
 							}
 							else{
+								sea.remove();
 								ser.save()
 									.then(function(serUpd){
 										res.json({status:true,series:serUpd.title,id:serUpd._id})
