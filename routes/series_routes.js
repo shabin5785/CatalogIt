@@ -102,7 +102,7 @@ module.exports = function(app,express){
 								if(req.body.inCollection)sea.inCollection = req.body.inCollection;
 								ser.save()
 									.then(function(serUpd){
-										res.json({status:true,series:serUpd.title,id:serUpd._id});
+										res.json({status:true,series:serUpd.title,id:serUpd._id,season:req.body.seasonid});
 									})
 									.catch(function(err){
 										console.log(err);

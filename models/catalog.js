@@ -84,7 +84,7 @@ seriesSchema.pre('save', function(next){
 	let fullInCollection = true;
 
 	for(let i=0;i<seasons.length;i++){
-		if(seasons[i].inCollection == false){
+		if(seasons[i].inCollection != true){
 			fullInCollection=false;
 			break;
 		}

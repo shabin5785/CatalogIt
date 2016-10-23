@@ -35,7 +35,7 @@ describe('Series', () => {
 
 	let season = {
 
-		_id : 1,
+		seasonid : 1,
 		noOfEpisodes : 12
 	}
 
@@ -131,12 +131,64 @@ describe('Series', () => {
 				res.body.status.should.be.true;
 				res.body.series.should.be.equal(series.title);
 				res.body.id.should.be.equal(id);
+				seasonid = res.body.season;
 				done();
 			});
 
 		});
 
 	});
+
+
+	describe(' Update a season' , () => {
+
+		it('request with wrong series id will fail', (done)=>{
+			chai.request(server)
+			.post('/catalog/series/single/'+wrongId)
+			.send(season)
+			.end((err,res) => {
+				res.should.have.status(200);
+				res.body.status.should.be.false;
+				res.body.error.should.be.equal('No Series found');
+				done();
+			});
+
+		});
+
+
+		it('request with valid series id and wrong season id will fail', (done)=>{
+			chai.request(server)
+			.put('/catalog/series/single/'+id)
+			.send({seasonid:0})
+			.end((err,res) => {
+				res.should.have.status(200);
+				res.body.status.should.be.false;
+				res.body.error.should.be.equal('No Season found');
+				done();
+			});
+
+		});
+
+		it('request with valid series id and valid season id should work', (done)=>{
+			chai.request(server)
+			.put('/catalog/series/single/'+id)
+			.send({seasonid:seasonid,inCollection:false})
+			.end((err,res) => {
+				res.should.have.status(200);
+				res.body.status.should.be.true;
+				res.body.series.should.be.equal(series.title);
+				res.body.id.should.be.equal(id);
+				res.body.season.should.be.equal(seasonid);
+				done();
+			});
+
+		});
+
+
+
+
+
+	})
 
 });
 
