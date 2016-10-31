@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const models = require('../models/catalog');
 const Series = models.series;
 const Season = models.season;
+const User = models.user;
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -18,12 +19,72 @@ let genre = 'genre';
 let wrongId = '123451ac93d97521e3712345';
 let seasonId = '';
 
+let token = '';
+
 describe('Series', () => {
 
 	//remove Series test collection before test
 	before((done) => {
 		Series.remove({},(err) => {
-			done();
+			if(err){
+				done(err);
+			}
+		});
+
+		Season.remove({},(err) => {
+			if(err){
+				done(err);
+			}
+		})
+
+		//delete all users
+		User.remove({},(err) => {
+			if(err){
+				done(err);
+			}
+		});
+
+		//add new user
+		let user = new User();
+		user.email = 'test@me.com';
+		user.password = 'password';
+		user.name = 'test';
+		user.save()
+			.then(function(usr){
+				console.log('User created ...');
+			})
+			.catch(function(err){
+				console.log(err);
+				done(err);
+			});
+
+		//call service to get token
+		chai.request(server)
+			.post('/login')
+			.send({username: user.email, password : user.password})
+			.end((err,res) => {
+				if(err){
+					done(err);
+				}
+				token = res.body.token;
+			});
+
+		done();
+
+	});
+
+	describe('Request without authentication ', () => {
+
+		it(' should fail ', (done) => {
+			chai.request(server)
+			.get('/catalog/book/all')
+			.end((err,res) => {
+				// console.log(">>>>>>>>>>>>> ",res.error.text);
+				res.should.have.status(401);
+				res.error.text.should.include('UnauthorizedError');
+				done();
+			});
+
 		});
 
 	});
@@ -46,6 +107,7 @@ describe('Series', () => {
 			let ser = {}
 			chai.request(server)
 				.post('/catalog/series/single')
+				.set('Authorization', 'Bearer ' + token)
 				.send(ser)
 				.end((err,res)=>{
 					res.should.have.status(200);
@@ -60,6 +122,7 @@ describe('Series', () => {
 		it('Add a single series' ,(done)=> {
 			chai.request(server)
 				.post('/catalog/series/single')
+				.set('Authorization', 'Bearer ' + token)
 				.send(series)
 				.end((err,res)=>{
 					res.should.have.status(200);
@@ -81,6 +144,7 @@ describe('Series', () => {
 		it('update without seriesid should fail', (done)=>{
 			chai.request(server)
 			.put('/catalog/series/single')
+			.set('Authorization', 'Bearer ' + token)
 			.send({genre:genre})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -93,6 +157,7 @@ describe('Series', () => {
 		it('successfull series update' , (done) => {
 			chai.request(server)
 			.put('/catalog/series/single')
+			.set('Authorization', 'Bearer ' + token)
 			.send({genre:genre,id:id})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -111,6 +176,7 @@ describe('Series', () => {
 		it('request with wrong series id will fail', (done)=>{
 			chai.request(server)
 			.post('/catalog/series/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.send(season)
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -125,6 +191,7 @@ describe('Series', () => {
 		it('request with correct seriesid and correct season should work ', (done) => {
 			chai.request(server)
 			.post('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.send(season)
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -145,6 +212,7 @@ describe('Series', () => {
 		it('request with wrong series id will fail', (done)=>{
 			chai.request(server)
 			.post('/catalog/series/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.send(season)
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -159,6 +227,7 @@ describe('Series', () => {
 		it('request with valid series id and wrong season id will fail', (done)=>{
 			chai.request(server)
 			.put('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.send({seasonid:0})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -172,6 +241,7 @@ describe('Series', () => {
 		it('request with valid series id and valid season id should work', (done)=>{
 			chai.request(server)
 			.put('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.send({seasonid:seasonId,inCollection:false})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -192,6 +262,7 @@ describe('Series', () => {
 		it('request with wrong id should fail' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -204,6 +275,7 @@ describe('Series', () => {
 		it('get series should work',(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body._id.should.be.equal(id);
@@ -218,6 +290,7 @@ describe('Series', () => {
 		it('update in collection value for a season to true', (done)=>{
 			chai.request(server)
 			.put('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.send({seasonid:seasonId,inCollection:true})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -233,6 +306,7 @@ describe('Series', () => {
 		it('fullInCollection for series should be true now',(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body._id.should.be.equal(id);
@@ -251,6 +325,7 @@ describe('Series', () => {
 		it('request with invalid series id should fail' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+wrongId+'/'+seasonId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -263,6 +338,7 @@ describe('Series', () => {
 		it('request with valid series id and invalid seasonid should fail' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+id+'/'+0)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -275,6 +351,7 @@ describe('Series', () => {
 		it('request with valid series id and valid seasonid should work' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/single/'+id+'/'+seasonId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body._id.should.be.equal(seasonId);
@@ -291,6 +368,7 @@ describe('Series', () => {
 		it('request with correct seriesid and correct season should work ', (done) => {
 			chai.request(server)
 			.post('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.send({seasonid:2, noOfEpisodes:20, inCollection:true})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -305,6 +383,7 @@ describe('Series', () => {
 		it(' get all series should work' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/all')
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.body.length.should.be.equal(1);
 				res.body[0].fullInCollection.should.be.true;
@@ -324,6 +403,7 @@ describe('Series', () => {
 		it('delete request with invalid series id should fail' ,(done)=>{
 			chai.request(server)
 			.delete('/catalog/series/single/'+wrongId+'/'+seasonId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res)=>{
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -336,6 +416,7 @@ describe('Series', () => {
 		it('delete request with valid series id and invalid season id should fail' ,(done)=>{
 			chai.request(server)
 			.delete('/catalog/series/single/'+id+'/'+33)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res)=>{
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -348,6 +429,7 @@ describe('Series', () => {
 		it('delete request with valid series id and valid season id should work' ,(done)=>{
 			chai.request(server)
 			.delete('/catalog/series/single/'+id+'/'+2)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res)=>{
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -366,6 +448,7 @@ describe('Series', () => {
 		it('delete request with invalid series id should fail' ,(done)=>{
 			chai.request(server)
 			.delete('/catalog/series/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res)=>{
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -378,6 +461,7 @@ describe('Series', () => {
 		it('delete request with valid series id should work' ,(done)=>{
 			chai.request(server)
 			.delete('/catalog/series/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res)=>{
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -389,6 +473,7 @@ describe('Series', () => {
 		it(' get all series should return no entries' ,(done) => {
 			chai.request(server)
 			.get('/catalog/series/all')
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.body.length.should.be.equal(0);
 				done();
@@ -398,8 +483,6 @@ describe('Series', () => {
 		});
 
 	});
-
-
 
 });
 

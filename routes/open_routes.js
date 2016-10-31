@@ -14,7 +14,7 @@ module.exports = function(app,express){
 		user.email = req.body.email;
 		user.save()
 			.then(function(user){
-				res.json({status:true,user:user.name})
+				res.json({status:true,user:user.email})
 			})
 			.catch(function(err){
 				console.log(err);
@@ -22,6 +22,6 @@ module.exports = function(app,express){
 			})
 
 	});
-	
+
 	return openRouter;
 }

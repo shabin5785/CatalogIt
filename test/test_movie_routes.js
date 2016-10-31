@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 const mongoose = require('mongoose');
 const models = require('../models/catalog');
 const Movie = models.movie;
+const User = models.user;
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -16,13 +17,51 @@ let id = '';
 let series = 'series';
 let wrongId = '123451ac93d97521e3712345';
 
+let token = '';
+
 describe('Movie' , function(){
 
 	//remove Movie test collection before test
 	before((done) => {
 		Movie.remove({},(err) => {
-			done();
+			if(err){
+				done(err);
+			}
 		});
+
+		//delete all users
+		User.remove({},(err) => {
+			if(err){
+				done(err);
+			}
+		});
+
+		//add new user
+		let user = new User();
+		user.email = 'test@me.com';
+		user.password = 'password';
+		user.name = 'test';
+		user.save()
+			.then(function(usr){
+				console.log('User created ...');
+			})
+			.catch(function(err){
+				console.log(err);
+				done(err);
+			});
+
+		//call service to get token
+		chai.request(server)
+			.post('/login')
+			.send({username: user.email, password : user.password})
+			.end((err,res) => {
+				if(err){
+					done(err);
+				}
+				token = res.body.token;
+			});
+
+		done();
 
 	});
 
@@ -30,6 +69,22 @@ describe('Movie' , function(){
 				title : 'title',
 				genre : 'genre'
 			}
+
+	describe('Request without authentication ', () => {
+
+		it(' should fail ', (done) => {
+			chai.request(server)
+			.get('/catalog/book/all')
+			.end((err,res) => {
+				// console.log(">>>>>>>>>>>>> ",res.error.text);
+				res.should.have.status(401);
+				res.error.text.should.include('UnauthorizedError');
+				done();
+			});
+
+		});
+
+	});
 
 	describe('Add a single movie ' , () => {
 
@@ -41,6 +96,7 @@ describe('Movie' , function(){
 
 			chai.request(server)
 				.post('/catalog/movie/single')
+				.set('Authorization', 'Bearer ' + token)
 				.send(mov)
 				.end((err,res)=> {
 					res.should.have.status(200);
@@ -55,6 +111,7 @@ describe('Movie' , function(){
 
 			chai.request(server)
 				.post('/catalog/movie/single')
+				.set('Authorization', 'Bearer ' + token)
 				.send(movie)
 				.end((err,res) => {
 					res.should.have.status(200);
@@ -70,15 +127,12 @@ describe('Movie' , function(){
 	});
 
 
-
-
-
-
 	describe('Update a single movie',() => {
 
 		it('update without movieid should fail', (done)=>{
 			chai.request(server)
 			.put('/catalog/movie/single')
+			.set('Authorization', 'Bearer ' + token)
 			.send({series:series})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -91,6 +145,7 @@ describe('Movie' , function(){
 		it('successfull movie update' , (done) => {
 			chai.request(server)
 			.put('/catalog/movie/single')
+			.set('Authorization', 'Bearer ' + token)
 			.send({series:series,id:id})
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -108,6 +163,7 @@ describe('Movie' , function(){
 		it('request with wrong id should fail' ,(done) => {
 			chai.request(server)
 			.get('/catalog/movie/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.false;
@@ -120,6 +176,7 @@ describe('Movie' , function(){
 		it('get movie should work',(done) => {
 			chai.request(server)
 			.get('/catalog/movie/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body._id.should.be.equal(id);
@@ -141,6 +198,7 @@ describe('Movie' , function(){
 
 			chai.request(server)
 				.post('/catalog/movie/single')
+				.set('Authorization', 'Bearer ' + token)
 				.send({title:'second',genre:'second'})
 				.end((err,res) => {
 					res.should.have.status(200);
@@ -155,6 +213,7 @@ describe('Movie' , function(){
 
 			chai.request(server)
 			.get('/catalog/movie/all')
+			.set('Authorization', 'Bearer ' + token)
 			.send()
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -169,6 +228,7 @@ describe('Movie' , function(){
 		it('request with wrong id should not work' ,(done) => {
 			chai.request(server)
 			.delete('/catalog/movie/single/'+wrongId)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -181,6 +241,7 @@ describe('Movie' , function(){
 		it('request with correct id should work' ,(done) => {
 			chai.request(server)
 			.delete('/catalog/movie/single/'+id)
+			.set('Authorization', 'Bearer ' + token)
 			.end((err,res) => {
 				res.should.have.status(200);
 				res.body.status.should.be.true;
@@ -193,6 +254,7 @@ describe('Movie' , function(){
 
 			chai.request(server)
 			.get('/catalog/movie/all')
+			.set('Authorization', 'Bearer ' + token)
 			.send()
 			.end((err,res) => {
 				res.should.have.status(200);
@@ -202,7 +264,6 @@ describe('Movie' , function(){
 		})
 
 	})
-
 
 
 });

@@ -6,8 +6,11 @@ const mongoose = require('mongoose');
 const path = require('path');
 const passport = require('passport');
 const strategy = require('passport-local');
-const jwt = require('express-jwt');
+const expressJwt = require('express-jwt'); 
 const bluebird = require('bluebird');
+
+//credential handler
+const creds = require('./credentials.js');
 
 
 //initialize express
@@ -27,6 +30,24 @@ app.use(function(req, res, next) {
     next();
 });
 
+//filter routes
+let filter = function(req){
+	let access = false;
+
+    if (req.path.match(/open/i)) {
+        access = true;
+    }
+     if (req.path.match(/login/i)) {
+        access = true;
+    }
+    
+    return access;
+}
+
+app.use(expressJwt({ secret: '34cf98asdjh6sdasd6' }).unless(filter), function(req, res, next) {
+    next();
+});
+
 //Mongodb connection
 mongoose.Promise = bluebird;
 mongoose.connect(config.database);
@@ -40,7 +61,15 @@ connection.on('open',function(){
 //set public dir to be used
 app.use(express.static(__dirname+'/public'));
 
-//passport
+//use passport
+app.use(passport.initialize());
+
+
+//login
+app.post('/login',passport.authenticate('local',{
+	session : false
+}), creds.serialize, creds.generateToken, creds.respond)
+
 
 
 //Routes
