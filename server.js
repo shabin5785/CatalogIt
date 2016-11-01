@@ -82,9 +82,14 @@ app.use('/catalog/series',series_routes);
 app.use('/open',open_routes);//non authenicated routes
 
 
+//route to angular root page
+app.get('/', function(req,res){
+	res.sendFile(path.join(__dirname+'/public/app/views/index.html'));
+});
+
 //catch all route
 app.get('*', function(req,res){
-	res.sendFile(path.join(__dirname+'/public/app/views/index.html'));
+    res.sendFile(path.join(__dirname+'/public/app/views/error.html'));
 });
 
 
