@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CatalogIt!</title>
+	<!-- Set base path for routing -->
+	<base href="/">
+
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<!-- JS -->
+	<script src="assets/js/angular.js"></script>
+	<script src="assets/js/dirPagination.js"></script>
+	<script src="assets/js/angular-route.js"></script>
+	<script src="assets/js/angular-animate.min.js"></script>
+	<!-- Controllers -->
+	<script src="app/controllers/main-controller.js"></script>
+	<!-- Servies -->
+	<script src="app/services/auth-service.js"></script>
+
+	<!-- main Angular Files -->
+	<script src="app/app.js"></script>
+	<script src="app/app.routes.js"></script>
+</head>
+
+<body ng-app="catalog">
+	<!-- NAVBAR -->
+	<header>
+		<div class="navbar navbar-inverse" ng-if="main.loggedIn">
+			<div class="container">
+				<div class="navbar-header">
+					<a href="/catalog" class="navbar-brand"><span class="glyphicon glyphicon-fire tex\
+						t-danger"></span>My Catalog</a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
+						<li ng-if="main.loggedIn" class="navbar-text">Hello {{ main.loggedinUser }}!
+						</li>
+						<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+
+		<main class="container">
+			<!-- ANGULAR VIEWS -->
+			<div ng-view></div>
+		</main>
+
+	</body>
+
+
+	</html>

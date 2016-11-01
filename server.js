@@ -26,21 +26,18 @@ app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, \
-    Authorization');
+        Authorization');
     next();
 });
 
 //filter routes
 let filter = function(req){
-	let access = false;
+	let access = true;
 
-    if (req.path.match(/open/i)) {
-        access = true;
+    if (req.path.match(/catalog/i)) {
+        access = false;
     }
-     if (req.path.match(/login/i)) {
-        access = true;
-    }
-    
+
     return access;
 }
 
@@ -87,7 +84,7 @@ app.use('/open',open_routes);//non authenicated routes
 
 //catch all route
 app.get('*', function(req,res){
-	res.sendFile(path.join(__dirname+'/public/app/views/error.html'));
+	res.sendFile(path.join(__dirname+'/public/app/views/index.html'));
 });
 
 

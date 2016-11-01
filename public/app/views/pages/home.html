@@ -1,0 +1,10 @@
+<div class="jumbotron text-center">
+	<h1>CatalogIt!</h1>
+	<div ng-if="!main.loggedIn">
+		<p>Login to see manage your Catalog.</p>
+		<a href="/login" class="btn btn-primary">Login</a>
+	</div>
+	<div ng-if="main.loggedIn">
+		<a href="/users" class="btn btn-primary">Manage your Catalog</a>
+	</div>
+</div>
