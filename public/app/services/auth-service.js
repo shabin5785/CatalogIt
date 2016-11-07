@@ -6,6 +6,21 @@ angular.module('auth-service',[])
 
 	let authTokenFactory = {};
 
+	//get token from local storage
+	authTokenFactory.getToken = function(){
+		return $window.localStorage.getItem('token');
+	}
+
+	//store token
+	authTokenFactory.setToken = function(token){
+		if(token){
+			$window.localStorage.setItem('token',token);
+		}
+		else{
+			$window.localStorage.removeItem('token');
+		}
+	}
+
 	return authTokenFactory;
 
 })
@@ -16,9 +31,50 @@ angular.module('auth-service',[])
 
 	let authFactory = {};
 
-	authFactory.isLoggedIn = function() {
-		return true;
+	let activeUser = 'nanan';
+
+	function setActiveUser(uname) {
+		activeUser = uname;
 	}
+
+	authFactory.getActiveUser = function() {
+		return activeUser;
+	}
+
+	//check if user is logged in. If token present then logged in
+	authFactory.isLoggedIn = function() {
+		if(AuthToken.getToken()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	//log in the user
+	authFactory.login = function(email, password){
+		//call node service to login
+		return $http.post('/login',{
+			username : email,
+			password : password
+		})
+		.success((data)=>{
+			//set token
+			console.trace(data);
+			AuthToken.setToken(data.token);
+			setActiveUser(data.name);
+			return data;
+		})
+		.error((err) => {
+			return err;
+		});
+	}
+
+	//log out
+	authFactory.logout = function() {
+		AuthToken.setToken();
+	}
+
 
 	return authFactory;
 
@@ -29,8 +85,29 @@ angular.module('auth-service',[])
 
 	let authinterceptorFactory = {};
 
+	//intercept requests
+	authinterceptorFactory.request = function(config){
+		let token = AuthToken.getToken();
 
-	return authinterceptorFactory;
+		if(token){
+			config.headers['Authorization'] = "Bearer " + token;
+		}
+		return config;
+	}
+
+	//response errors
+	authinterceptorFactory.responseError = function(response) {
+        //403 forbidden
+        if (response.status == 403) {
+        	AuthToken.setToken();
+        	$location.path('/login');
+        }
+
+        //return errors as a promise
+        return $q.reject(response);
+    };
+
+    return authinterceptorFactory;
 
 });
 

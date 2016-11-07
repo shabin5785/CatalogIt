@@ -4,7 +4,7 @@ main {
 
 
 /* HEADER 
- ===================== */
+===================== */
 
 header .navbar {
     border-radius: 0;
@@ -12,7 +12,7 @@ header .navbar {
 
 
 /* ANIMATIONS
-  ====================== */
+====================== */
 
 .spinner {
     animation: spin 1s infinite;
@@ -54,4 +54,9 @@ header .navbar {
     -webkit-animation: zoomIn 0.3s both ease;
     -moz-animation: zoomIn 0.3s both ease;
     animation: zoomIn 0.3s both ease;
+}
+
+
+.top-margin {
+    margin-top:5px;
 }
