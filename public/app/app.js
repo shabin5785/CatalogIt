@@ -1,8 +1,10 @@
 angular.module('catalog',[
 	'ngAnimate',
 	'app.routes',
-	'auth-service',
 	'main-controller',
+	'auth-service',
+	'book-controller',
+	'book-service'
 	])
 
 //app config to integrate token to request

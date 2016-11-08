@@ -22,6 +22,21 @@ angular.module('app.routes',['ngRoute'])
 		controllerAs: 'catalog'
 	})
 
+	//books view page
+	.when('/mybooks',{
+		templateUrl: 'app/views/pages/books/mybooks.html',
+		controller: 'mybookController',
+		controllerAs: 'book'
+	})
+
+	//add book page
+	.when('/addbook',{
+		templateUrl: 'app/views/pages/books/book.html',
+		controller: 'addbookController',
+		controllerAs: 'book'
+	})
+
+
 	//remove hash from url
 	$locationProvider.html5Mode(true);
 });

@@ -31,7 +31,7 @@ angular.module('auth-service',[])
 
 	let authFactory = {};
 
-	let activeUser = 'nanan';
+	let activeUser = '';
 
 	function setActiveUser(uname) {
 		activeUser = uname;
