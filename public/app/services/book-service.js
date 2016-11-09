@@ -11,8 +11,8 @@ angular.module('book-service',[])
 	}
 
 	//add book
-	bookFactory.addBook = function(){
-		
+	bookFactory.addBook = function(book){
+		return $http.post('/catalog/book/single', book);
 	}
 
 	return bookFactory;

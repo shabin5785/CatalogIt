@@ -1,0 +1,78 @@
+<div class="row">
+	<p class="navbar-text"><a href="/mybooks" class="btn btn-primary">Back to MyBooks</a></p>
+</div>
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<div class="jumbotron">
+		<h2 ng-if="book.operation=='create'">Add Book</h2>
+		<h2 ng-if="book.operation=='edit'">Add Book</h2>
+	</div>
+</div>
+
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<form class="form-horizontal" ng-submit="book.addBook()">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Title</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="book.bookdata.title">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Author</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="book.bookdata.author">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Series</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="book.bookdata.series">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">In Collection?</label>
+			<div class="col-sm-6">
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" value="true" ng-model="book.bookdata.inCollection">
+						Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" value="false" ng-model="book.bookdata.inCollection">
+						No
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="book.operation=='create'">Add Book</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="book.operation=='edit'">Update Book</button>
+			</div>
+		</div>
+
+		<div class="row show-hide-message" ng-show="book.message">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-info">
+					{{ book.message }}
+				</div>
+			</div>
+		</div>
+		<div class="row show-hide-message" ng-show="book.error">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-danger">
+					{{ book.error }}
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>

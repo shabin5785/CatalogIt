@@ -3,7 +3,7 @@
 </div>
 
 <div>
-	<p class="navbar-text"><a href="/catalogit" class="btn btn-success">Add Book</a></p>
+	<p class="navbar-text"><a href="/addbook" class="btn btn-success">Add Book</a></p>
 </div>
 
 <table class="table table-bordered table-striped">
@@ -17,8 +17,14 @@
 		</tr>
 	</thead>
 
-	<tbody>
-		<tr></tr>
+	<tbody ng-show="book.mybooks">
+		<tr ng-repeat="bok in book.mybooks">
+			<td> {{bok.title}} </td>
+			<td> {{bok.author}} </td>
+			<td> {{bok.series}} </td>
+			<td> {{bok.inCollection}} </td>
+			<td></td>
+		</tr>
 	</tbody>
 
 </table>
