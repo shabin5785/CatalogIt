@@ -39,7 +39,7 @@ module.exports = function(app,express){
 						if(req.body.title) bok.title = req.body.title;
 						if(req.body.author) bok.author = req.body.author;
 						if(req.body.series) bok.series = req.body.series;
-						if(req.body.inCollection) bok.inCollection = req.body.inCollection;
+						if(req.body.inCollection != 'undefined') bok.inCollection = req.body.inCollection;
 						bok.save()
 							.then(function(bok){
 								res.json({status:true,book:bok.title,id:bok._id});

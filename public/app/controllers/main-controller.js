@@ -30,7 +30,7 @@ angular.module('main-controller', [])
 
 	vm.logout = () => {
 		Auth.logout();
-		$location.path('/login');
+		$location.path('/');
 	}
 
 

@@ -15,6 +15,17 @@ angular.module('book-service',[])
 		return $http.post('/catalog/book/single', book);
 	}
 
+	bookFactory.getSingleBook = function(bookid){
+		return $http.get('/catalog/book/single/'+bookid);
+	}
+
+	bookFactory.updateBook = function(bookid,book){
+		book.id = bookid;
+		return $http.put('/catalog/book/single',book);
+	}
+
+	bookFactory.id = '';
+
 	return bookFactory;
 
 });

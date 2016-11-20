@@ -5,13 +5,13 @@
 <div class="row col-sm-6 col-sm-offset-3">
 	<div class="jumbotron">
 		<h2 ng-if="book.operation=='create'">Add Book</h2>
-		<h2 ng-if="book.operation=='edit'">Add Book</h2>
+		<h2 ng-if="book.operation=='edit'">Edit Book</h2>
 	</div>
 </div>
 
 <br>
 <div class="row col-sm-6 col-sm-offset-3">
-	<form class="form-horizontal" ng-submit="book.addBook()">
+	<form class="form-horizontal" ng-submit="book.processBook()">
 
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Title</label>
@@ -39,13 +39,13 @@
 			<div class="col-sm-6">
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" value="true" ng-model="book.bookdata.inCollection">
+						<input type="radio" name="incollection" ng-value=true ng-model="book.bookdata.inCollection">
 						Yes
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" value="false" ng-model="book.bookdata.inCollection">
+						<input type="radio" name="incollection" ng-value=false ng-model="book.bookdata.inCollection">
 						No
 					</label>
 				</div>

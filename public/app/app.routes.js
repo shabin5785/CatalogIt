@@ -36,6 +36,13 @@ angular.module('app.routes',['ngRoute'])
 		controllerAs: 'book'
 	})
 
+	//edit book page
+	.when('/editbook/:bookid',{
+		templateUrl: 'app/views/pages/books/book.html',
+		controller: 'editbookcontroller',
+		controllerAs: 'book'
+	})
+
 
 	//remove hash from url
 	$locationProvider.html5Mode(true);

@@ -23,7 +23,7 @@ angular.module('book-controller',[])
 	vm.message = '';
 	vm.error = '';
 
-	vm.addBook = function(){
+	vm.processBook = function(){
 		vm.processing = true;
 		vm.message = '';
 
@@ -34,6 +34,37 @@ angular.module('book-controller',[])
 		.error(function(err){
 			console.log(err);
 			vm.error = 'Error adding book. Try again';
+		})
+	}
+
+})
+
+.controller('editbookcontroller', function($routeParams,$location,Book){
+
+	let vm = this;
+	vm.operation = 'edit';
+	vm.message = '';
+	vm.error = '';
+	let bookid = $routeParams.bookid;
+
+	Book.getSingleBook(bookid)
+	.success(function(bok){
+		vm.bookdata = bok;
+		console.log('book',bok);
+	})
+	.error(function(err){
+		console.log(err);
+		vm.error = 'Error retrieving book. Try again';
+	})
+
+	vm.processBook = function(){
+		Book.updateBook(bookid,vm.bookdata)
+		.success(function(bok){
+			vm.message = 'Book updated succesfully';
+		})
+		.error(function(err){
+			console.log(err);
+			vm.error = 'Error updating Book. Please try again';
 		})
 	}
 
