@@ -23,7 +23,10 @@
 			<td> {{bok.author}} </td>
 			<td> {{bok.series}} </td>
 			<td> {{bok.inCollection}} </td>
-			<td><a ng-href="/editbook/{{bok._id}}">Edit</a></td>
+			<td>
+				<a ng-href="/editbook/{{bok._id}}">Edit</a>
+				<a ng-href="#" ng-click="book.deleteBook(bok._id)">Delete</a>
+			</td>
 		</tr>
 	</tbody>
 

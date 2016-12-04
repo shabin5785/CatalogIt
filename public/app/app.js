@@ -4,7 +4,9 @@ angular.module('catalog',[
 	'main-controller',
 	'auth-service',
 	'book-controller',
-	'book-service'
+	'book-service',
+	'movie-controller',
+	'movie-service'
 	])
 
 //app config to integrate token to request

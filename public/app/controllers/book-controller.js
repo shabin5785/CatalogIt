@@ -1,17 +1,28 @@
 angular.module('book-controller',[])
 
-.controller('mybookController' , function($location,Book){
+.controller('mybookController' , function($location,$route,Book){
 
 	let vm = this;
 
 	Book.getAllBooks()
 	.success(function(data){
 		vm.mybooks = data;
-		console.log(vm.mybooks);
 	})
 	.error(function(err){
 		console.log(err);
+		vm.error = "Error retrieving books";
 	})
+
+	vm.deleteBook = function(bookid){
+		Book.deleteBook(bookid)
+			.success(function(book){
+				$route.reload();
+			})
+			.error(function(err){
+				console.log(err);
+				vm.error = 'Error deleting book';
+			})
+	}
 
 })
 
@@ -39,7 +50,7 @@ angular.module('book-controller',[])
 
 })
 
-.controller('editbookcontroller', function($routeParams,$location,Book){
+.controller('editbookController', function($routeParams,$location,Book){
 
 	let vm = this;
 	vm.operation = 'edit';
@@ -50,7 +61,6 @@ angular.module('book-controller',[])
 	Book.getSingleBook(bookid)
 	.success(function(bok){
 		vm.bookdata = bok;
-		console.log('book',bok);
 	})
 	.error(function(err){
 		console.log(err);

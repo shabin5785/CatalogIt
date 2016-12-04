@@ -1,0 +1,33 @@
+<div>
+	<p class="navbar-text"><a href="/catalogit" class="btn btn-primary">Back to Catalog</a></p>
+</div>
+
+<div>
+	<p class="navbar-text"><a href="/addmovie" class="btn btn-success">Add Movie</a></p>
+</div>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Genre</th>
+			<th>Series</th>
+			<th>In Collection</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody ng-show="movie.mymovies">
+		<tr ng-repeat="mov in movie.mymovies">
+			<td> {{mov.title}} </td>
+			<td> {{mov.genre}} </td>
+			<td> {{mov.series}} </td>
+			<td> {{mov.inCollection}} </td>
+			<td>
+				<a ng-href="/editmovie/{{mov._id}}">Edit</a>
+				<a ng-href="#" ng-click="movie.deleteMovie(mov._id)">Delete</a>
+			</td>
+		</tr>
+	</tbody>
+
+</table>

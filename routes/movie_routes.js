@@ -17,7 +17,10 @@ module.exports = function(app,express){
 			if(req.body.series){
 				movie.series = req.body.series;
 			}
-			movie.inCollection = true;
+			movie.inCollection = false;
+			if(req.body.inCollection){
+				movie.inCollection = req.body.inCollection;
+			}
 			movie.save()
 				.then(function(mov){
 					res.json({status:true,movie:mov.title,id:mov._id});
@@ -39,7 +42,7 @@ module.exports = function(app,express){
 						if(req.body.title) mov.title = req.body.title;
 						if(req.body.genre) mov.genre = req.body.genre;
 						if(req.body.series) mov.series = req.body.series;
-						if(req.body.inCollection) mov.inCollection = req.body.inCollection;
+						if(req.body.inCollection != 'undefined') mov.inCollection = req.body.inCollection;
 						mov.save()
 							.then(function(mov){
 								res.json({status:true,movie:mov.title,id:mov._id});

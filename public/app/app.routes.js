@@ -39,8 +39,29 @@ angular.module('app.routes',['ngRoute'])
 	//edit book page
 	.when('/editbook/:bookid',{
 		templateUrl: 'app/views/pages/books/book.html',
-		controller: 'editbookcontroller',
+		controller: 'editbookController',
 		controllerAs: 'book'
+	})
+
+	//movies view page
+	.when('/mymovies',{
+		templateUrl: 'app/views/pages/movies/mymovies.html',
+		controller: 'mymovieController',
+		controllerAs: 'movie'
+	})
+
+	//add movie page
+	.when('/addmovie',{
+		templateUrl: 'app/views/pages/movies/movie.html',
+		controller: 'addmovieController',
+		controllerAs: 'movie'
+	})
+
+	//edit movie page
+	.when('/editmovie/:movieid',{
+		templateUrl: 'app/views/pages/movies/movie.html',
+		controller: 'editmovieController',
+		controllerAs: 'movie'
 	})
 
 

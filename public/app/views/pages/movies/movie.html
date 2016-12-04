@@ -1,0 +1,78 @@
+<div class="row">
+	<p class="navbar-text"><a href="/mymovies" class="btn btn-primary">Back to MyMovies</a></p>
+</div>
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<div class="jumbotron">
+		<h2 ng-if="movie.operation=='create'">Add Movie</h2>
+		<h2 ng-if="movie.operation=='edit'">Edit Movie</h2>
+	</div>
+</div>
+
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<form class="form-horizontal" ng-submit="movie.processMovie()">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Title</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="movie.moviedata.title">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Genre</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="movie.moviedata.genre">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Series</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="movie.moviedata.series">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">In Collection?</label>
+			<div class="col-sm-6">
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" ng-value=true ng-model="movie.moviedata.inCollection">
+						Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" ng-value=false ng-model="movie.moviedata.inCollection">
+						No
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='create'">Add Movie</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='edit'">Update Movie</button>
+			</div>
+		</div>
+
+		<div class="row show-hide-message" ng-show="movie.message">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-info">
+					{{ movie.message }}
+				</div>
+			</div>
+		</div>
+		<div class="row show-hide-message" ng-show="movie.error">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-danger">
+					{{ movie.error }}
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>

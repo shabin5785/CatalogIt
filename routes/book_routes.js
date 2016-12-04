@@ -17,7 +17,10 @@ module.exports = function(app,express){
 			if(req.body.series){
 				book.series = req.body.series;
 			}
-			book.inCollection = true;
+			book.inCollection = false;
+			if(req.body.inCollection){
+				book.inCollection = req.body.inCollection;
+			}
 			book.save()
 				.then(function(bok){
 					res.json({status:true,book:bok.title,id:bok._id});

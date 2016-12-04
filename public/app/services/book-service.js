@@ -15,13 +15,20 @@ angular.module('book-service',[])
 		return $http.post('/catalog/book/single', book);
 	}
 
+	//get single book
 	bookFactory.getSingleBook = function(bookid){
 		return $http.get('/catalog/book/single/'+bookid);
 	}
 
+	//update single book
 	bookFactory.updateBook = function(bookid,book){
 		book.id = bookid;
 		return $http.put('/catalog/book/single',book);
+	}
+
+	//delete book
+	bookFactory.deleteBook = function(bookid){
+		return $http.delete('/catalog/book/single/'+bookid);
 	}
 
 	bookFactory.id = '';
