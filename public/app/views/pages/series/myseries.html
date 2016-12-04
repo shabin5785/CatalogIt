@@ -1,0 +1,31 @@
+<div>
+	<p class="navbar-text"><a href="/catalogit" class="btn btn-primary">Back to Catalog</a></p>
+</div>
+
+<div>
+	<p class="navbar-text"><a href="/addseries" class="btn btn-success">Add Series</a></p>
+</div>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Genre</th>
+			<th>Full In Collection</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody ng-show="series.myseries">
+		<tr ng-repeat="ser in series.myseries">
+			<td> {{ser.title}} </td>
+			<td> {{ser.genre}} </td>
+			<td> {{ser.fullInCollection}} </td>
+			<td>
+				<a ng-href="/editseries/{{ser._id}}">Edit</a>
+				<a ng-href="#" ng-click="series.deleteSeries(ser._id)">Delete</a>
+			</td>
+		</tr>
+	</tbody>
+
+</table>

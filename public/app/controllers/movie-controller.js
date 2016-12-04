@@ -10,7 +10,7 @@ angular.module('movie-controller',[])
 		})
 		.error(function(err){
 			console.log(err);
-			vm.error = "Error retrieving movies";
+			vm.error = "Error retrieving Movies";
 		})
 
 	vm.deleteMovie = function(movieid){

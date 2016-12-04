@@ -64,6 +64,29 @@ angular.module('app.routes',['ngRoute'])
 		controllerAs: 'movie'
 	})
 
+	//series view page
+	.when('/myseries',{
+		templateUrl: 'app/views/pages/series/myseries.html',
+		controller: 'myseriesController',
+		controllerAs: 'series'
+	})
+
+	//add series page
+	.when('/addseries',{
+		templateUrl: 'app/views/pages/series/series.html',
+		controller: 'addseriesController',
+		controllerAs: 'series'
+	})
+
+	//edit series page
+	.when('/editseries/:seriesid',{
+		templateUrl: 'app/views/pages/series/series.html',
+		controller: 'editseriesController',
+		controllerAs: 'series'
+	})
+
+
+
 
 	//remove hash from url
 	$locationProvider.html5Mode(true);

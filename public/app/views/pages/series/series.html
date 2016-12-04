@@ -1,0 +1,53 @@
+<div class="row">
+	<p class="navbar-text"><a href="/myseries" class="btn btn-primary">Back to MySeries</a></p>
+</div>
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<div class="jumbotron">
+		<h2 ng-if="series.operation=='create'">Add Series</h2>
+		<h2 ng-if="series.operation=='edit'">Edit Series</h2>
+	</div>
+</div>
+
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<form class="form-horizontal" ng-submit="series.processSeries()">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Title</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="series.seriesdata.title">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Genre</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="series.seriesdata.genre">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='create'">Add Series</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='edit'">Update Series</button>
+			</div>
+		</div>
+
+		<div class="row show-hide-message" ng-show="series.message">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-info">
+					{{ series.message }}
+				</div>
+			</div>
+		</div>
+		<div class="row show-hide-message" ng-show="series.error">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-danger">
+					{{ series.error }}
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>
