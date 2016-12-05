@@ -1,0 +1,71 @@
+<div class="row">
+	<p class="navbar-text"><a ng-href="/{{season.seriesid}}/myseasons" class="btn btn-primary">Back to Seasons</a></p>
+</div>
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<div class="jumbotron">
+		<h2 ng-if="season.operation=='create'">Add Season</h2>
+		<h2 ng-if="season.operation=='edit'">Edit Season</h2>
+	</div>
+</div>
+
+<br>
+<div class="row col-sm-6 col-sm-offset-3">
+	<form class="form-horizontal" ng-submit="season.processSeason()">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Number</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="season.seasondata.seasonid">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">No Of Episodes</label>
+			<div class="col-sm-6">
+				<input type="text" class="form-control" ng-model="season.seasondata.noOfEpisodes">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">In Collection?</label>
+			<div class="col-sm-6">
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" ng-value=true ng-model="season.seasondata.inCollection">
+						Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="incollection" ng-value=false ng-model="season.seasondata.inCollection">
+						No
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='create'">Add Season</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='edit'">Update Season</button>
+			</div>
+		</div>
+
+		<div class="row show-hide-message" ng-show="season.message">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-info">
+					{{ season.message }}
+				</div>
+			</div>
+		</div>
+		<div class="row show-hide-message" ng-show="season.error">
+			<div class="col-sm-6 col-sm-offset-2">
+				<div class="alert alert-danger">
+					{{ season.error }}
+				</div>
+			</div>
+		</div>
+
+	</form>
+</div>

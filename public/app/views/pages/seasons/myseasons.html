@@ -1,0 +1,38 @@
+<div>
+	<p class="navbar-text"><a href="/catalogit" class="btn btn-primary">Back to Catalog</a></p>
+</div>
+
+<div>
+	<p class="navbar-text"><a href="/myseries" class="btn btn-primary">Back to My Series</a></p>
+</div>
+<div>
+	<p class="navbar-text"><a ng-href="/{{season.seriesid}}/addseason" class="btn btn-success">Add Season</a></p>
+</div>
+
+<br>
+<p>
+	<h4>Seasons for {{season.seriesName}}</h4>
+</p>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Number</th>
+			<th>No Of Episodes</th>
+			<th>In Collection</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody ng-show="season.myseasons">
+		<tr ng-repeat="sea in season.myseasons">
+			<td> {{sea._id}} </td>
+			<td> {{sea.noOfEpisodes}} </td>
+			<td> {{sea.inCollection}} </td>
+			<td>
+				<a ng-href="/{{season.seriesid}}/editseason/{{sea._id}}">Edit</a>
+				<a ng-href="#" ng-click="season.deleteSeason(season.seriesid,sea._id)">Delete</a>
+			</td>
+		</tr>
+	</tbody>
+
+</table>

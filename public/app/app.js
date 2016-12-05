@@ -8,7 +8,9 @@ angular.module('catalog',[
 	'movie-controller',
 	'movie-service',
 	'series-controller',
-	'series-service'
+	'series-service',
+	'season-controller',
+	'season-service'
 	])
 
 //app config to integrate token to request

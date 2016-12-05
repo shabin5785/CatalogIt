@@ -85,6 +85,27 @@ angular.module('app.routes',['ngRoute'])
 		controllerAs: 'series'
 	})
 
+	//seasons view page
+	.when('/:seriesid/myseasons',{
+		templateUrl: 'app/views/pages/seasons/myseasons.html',
+		controller: 'myseasonController',
+		controllerAs: 'season'
+	})
+
+	//add season page
+	.when('/:seriesid/addseason',{
+		templateUrl: 'app/views/pages/seasons/season.html',
+		controller: 'addseasonController',
+		controllerAs: 'season'
+	})
+
+	//edit seasons page
+	.when('/:seriesid/editseason/:seasonid',{
+		templateUrl: 'app/views/pages/seasons/season.html',
+		controller: 'editseasonController',
+		controllerAs: 'season'
+	})
+
 
 
 
