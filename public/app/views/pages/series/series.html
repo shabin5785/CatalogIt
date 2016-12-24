@@ -11,12 +11,13 @@
 
 <br>
 <div class="row col-sm-6 col-sm-offset-3">
-	<form class="form-horizontal" ng-submit="series.processSeries()">
+	<form class="form-horizontal" ng-submit="series.processSeries()" name="seriesform" novalidate>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':seriesform.title.$invalid && !seriesform.title.$pristine}">
 			<label class="col-sm-2 control-label">Title</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="series.seriesdata.title">
+				<input type="text" class="form-control" name="title" ng-model="series.seriesdata.title" ng-minlength=2 required="true">
+				<p ng-show="seriesform.title.$invalid && !seriesform.title.$pristine" class="text-info">Enter Title</p>
 			</div>
 		</div>
 
@@ -29,8 +30,8 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-6">
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='create'">Add Series</button>
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='edit'">Update Series</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='create'" ng-disabled="seriesform.$invalid">Add Series</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="series.operation=='edit'" ng-disabled="seriesform.$invalid">Update Series</button>
 			</div>
 		</div>
 

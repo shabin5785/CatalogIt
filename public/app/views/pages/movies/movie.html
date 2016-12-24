@@ -11,51 +11,54 @@
 
 <br>
 <div class="row col-sm-6 col-sm-offset-3">
-	<form class="form-horizontal" ng-submit="movie.processMovie()">
+	<form class="form-horizontal" ng-submit="movie.processMovie()" name="movieform" novalidate>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':movieform.title.$invalid && !movieform.title.$pristine}">
 			<label class="col-sm-2 control-label">Title</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="movie.moviedata.title">
+				<input type="text" class="form-control" name="title" ng-model="movie.moviedata.title" ng-minlength=2 required="true">
+				<p ng-show="movieform.title.$invalid && !movieform.title.$pristine" class="text-info">Enter Title</p>	
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':movieform.genre.$invalid && !movieform.genre.$pristine}">
 			<label class="col-sm-2 control-label">Genre</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="movie.moviedata.genre">
+				<input type="text" class="form-control" name="genre" ng-model="movie.moviedata.genre" ng-minlength=2 required="true">
+				<p ng-show="movieform.genre.$invalid && !movieform.genre.$pristine" class="text-info">Enter Title</p>	
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label class="col-sm-2 control-label">Series</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="movie.moviedata.series">
+				<input type="text" class="form-control" name="series" ng-model="movie.moviedata.series">
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':movieform.incollection.$invalid && !movieform.$pristine}">
 			<label class="col-sm-2 control-label">In Collection?</label>
 			<div class="col-sm-6">
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=true ng-model="movie.moviedata.inCollection">
+						<input type="radio" name="incollection" ng-value=true ng-model="movie.moviedata.inCollection" required="true">
 						Yes
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=false ng-model="movie.moviedata.inCollection">
+						<input type="radio" name="incollection" ng-value=false ng-model="movie.moviedata.inCollection" required="true">
 						No
 					</label>
 				</div>
 			</div>
+			<p ng-show="movieform.incollection.$invalid && !movieform.$pristine" class="text-info">Choose InCollection</p>
 		</div>
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-6">
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='create'">Add Movie</button>
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='edit'">Update Movie</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='create'" ng-disabled="movieform.$invalid">Add Movie</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="movie.operation=='edit'" ng-disabled="movieform.$invalid">Update Movie</button>
 			</div>
 		</div>
 

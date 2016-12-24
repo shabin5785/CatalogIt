@@ -11,44 +11,47 @@
 
 <br>
 <div class="row col-sm-6 col-sm-offset-3">
-	<form class="form-horizontal" ng-submit="season.processSeason()">
+	<form class="form-horizontal" ng-submit="season.processSeason()" name="seasonform" novalidate>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':seasonform.number.$invalid && !seasonform.number.$pristine}">
 			<label class="col-sm-2 control-label">Number</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="season.seasondata.seasonid">
+				<input type="text" class="form-control" name="number" ng-model="season.seasondata.seasonid" required="true">
+				<p ng-show="seasonform.number.$invalid && !seasonform.number.$pristine" class="text-info">Enter Season Number</p>
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':seasonform.noofepisodes.$invalid && !seasonform.noofepisodes.$pristine}">
 			<label class="col-sm-2 control-label">No Of Episodes</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="season.seasondata.noOfEpisodes">
+				<input type="text" class="form-control" name="noofepisodes" ng-model="season.seasondata.noOfEpisodes" required="true">
+				<p ng-show="seasonform.noofepisodes.$invalid && !seasonform.noofepisodes.$pristine" class="text-info">Enter Number of Episodes</p>
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':seasonform.incollection.$invalid && !seasonform.$pristine}">
 			<label class="col-sm-2 control-label">In Collection?</label>
 			<div class="col-sm-6">
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=true ng-model="season.seasondata.inCollection">
+						<input type="radio" name="incollection" ng-value=true ng-model="season.seasondata.inCollection" required="true">
 						Yes
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=false ng-model="season.seasondata.inCollection">
+						<input type="radio" name="incollection" ng-value=false ng-model="season.seasondata.inCollection" required="true">
 						No
 					</label>
 				</div>
 			</div>
+			<p ng-show="seasonform.incollection.$invalid && !seasonform.$pristine" class="text-info">Choose InCollection</p>
 		</div>
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-6">
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='create'">Add Season</button>
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='edit'">Update Season</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='create'" ng-disabled="seasonform.$invalid">Add Season</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="season.operation=='edit'" ng-disabled="seasonform.$invalid">Update Season</button>
 			</div>
 		</div>
 

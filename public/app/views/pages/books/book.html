@@ -17,15 +17,16 @@
 			<label class="col-sm-2 control-label">Title</label>
 			<div class="col-sm-6">
 				<input type="text" class="form-control" ng-model="book.bookdata.title"
-					name="title" required="true">
+					name="title" required="true" ng-minlength=2>
 				<p ng-show="bookform.title.$invalid && !bookform.title.$pristine" class="text-info">Enter Title</p>	
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':bookform.author.$invalid && !bookform.author.$pristine}">
 			<label class="col-sm-2 control-label">Author</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="book.bookdata.author">
+				<input type="text" name="author" class="form-control" ng-model="book.bookdata.author" ng-minlength=2 required="true">
+				<p ng-show="bookform.author.$invalid && !bookform.author.$pristine" class="text-info">Enter Author</p>	
 			</div>
 		</div>
 
@@ -36,22 +37,23 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':bookform.incollection.$invalid && !bookform.$pristine}">
 			<label class="col-sm-2 control-label">In Collection?</label>
 			<div class="col-sm-6">
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=true ng-model="book.bookdata.inCollection">
+						<input type="radio" name="incollection" ng-value=true ng-model="book.bookdata.inCollection" required="true">
 						Yes
 					</label>
 				</div>
 				<div class="radio">
 					<label>
-						<input type="radio" name="incollection" ng-value=false ng-model="book.bookdata.inCollection">
+						<input type="radio" name="incollection" ng-value=false ng-model="book.bookdata.inCollection" required="true">
 						No
 					</label>
 				</div>
 			</div>
+			<p ng-show="bookform.incollection.$invalid && !bookform.$pristine" class="text-info">Choose InCollection</p>	
 		</div>
 
 		<div class="form-group">
