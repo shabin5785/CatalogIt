@@ -127,7 +127,6 @@ module.exports = function(app,express){
 						res.json({status:false,error:'No Series found'})
 					}
 					else{
-						console.log('ns  ', ser);
 						res.json(ser);
 					}
 				})

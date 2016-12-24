@@ -5,23 +5,23 @@ angular.module('series-controller',[])
 	let vm = this;
 
 	Series.getAllSeries()
-		.success(function(data){
-			vm.myseries = data
-		})
-		.error(function(err){
+		.then(function(response){
+			vm.myseries = response.data
+		},
+		function(err){
 			console.log(err);
 			vm.error = "Error retrieving Series";
-		})
+		});
 
 	vm.deleteSeries = function(seriesid){
 		Series.deleteSeries(seriesid)
-			.success(function(){
+			.then(function(){
 				$route.reload();
-			})
-			.error(function(err){
+			},
+			function(err){
 				console.log(err);
 				vm.error = 'Error deleting Series';
-			})
+			});
 	}
 
 })
@@ -39,10 +39,10 @@ angular.module('series-controller',[])
 		vm.message = '';
 
 		Series.addSeries(vm.seriesdata)
-		.success(function(series){
+		.then(function(response){
 			vm.message = 'Series added succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error adding Series. Try again';
 		})
@@ -59,23 +59,23 @@ angular.module('series-controller',[])
 	let seriesid = $routeParams.seriesid;
 
 	Series.getSingleSeries(seriesid)
-	.success(function(ser){
-		vm.seriesdata = ser;
-	})
-	.error(function(err){
+	.then(function(response){
+		vm.seriesdata = response.data;
+	},
+	function(err){
 		console.log(err);
 		vm.error = 'Error retrieving Series. Try again';
 	})
 
 	vm.processSeries = function(){
 		Series.updateSeries(seriesid,vm.seriesdata)
-		.success(function(ser){
+		.then(function(response){
 			vm.message = 'Series updated succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error updating Series. Please try again';
-		})
+		});
 	}
 
 })

@@ -17,12 +17,12 @@ angular.module('main-controller', [])
 		vm.processing = true;
 		vm.error = '';
 		Auth.login(vm.email,vm.password)
-		.success((data) => {
+		.then(function(response) {
 			vm.processing = false;
 			vm.loggedInUser = Auth.getActiveUser();
 			$location.path('/catalogit');
-		})
-		.error((err) => {
+		}
+		,function(err) {
 			vm.processing = false;
 			vm.error = 'Invalid credentials. Login failed';
 		});

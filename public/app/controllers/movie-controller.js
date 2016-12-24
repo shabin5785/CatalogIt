@@ -5,23 +5,23 @@ angular.module('movie-controller',[])
 	let vm = this;
 
 	Movie.getAllMovies()
-		.success(function(data){
-			vm.mymovies = data
-		})
-		.error(function(err){
+		.then(function(response){
+			vm.mymovies = response.data
+		},
+		function(err){
 			console.log(err);
 			vm.error = "Error retrieving Movies";
-		})
+		});
 
 	vm.deleteMovie = function(movieid){
 		Movie.deleteMovie(movieid)
-			.success(function(){
+			.then(function(){
 				$route.reload();
-			})
-			.error(function(err){
+			},
+			function(err){
 				console.log(err);
 				vm.error = 'Error deleting Movie';
-			})
+			});
 	}
 
 })
@@ -39,13 +39,13 @@ angular.module('movie-controller',[])
 		vm.message = '';
 
 		Movie.addMovie(vm.moviedata)
-		.success(function(movie){
+		.then(function(response){
 			vm.message = 'Movie added succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error adding Movie. Try again';
-		})
+		});
 	}
 
 })
@@ -59,23 +59,23 @@ angular.module('movie-controller',[])
 	let movieid = $routeParams.movieid;
 
 	Movie.getSingleMovie(movieid)
-	.success(function(mov){
-		vm.moviedata = mov;
-	})
-	.error(function(err){
+	.then(function(response){
+		vm.moviedata = response.data;
+	},
+	function(err){
 		console.log(err);
 		vm.error = 'Error retrieving movie. Try again';
-	})
+	});
 
 	vm.processMovie = function(){
 		Movie.updateMovie(movieid,vm.moviedata)
-		.success(function(mov){
+		.then(function(response){
 			vm.message = 'Movie updated succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error updating Movie. Please try again';
-		})
+		});
 	}
 
 })

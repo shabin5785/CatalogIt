@@ -55,17 +55,16 @@ angular.module('auth-service',[])
 	authFactory.login = function(email, password){
 		//call node service to login
 		return $http.post('/login',{
-			username : email,
+			username : email, 
 			password : password
 		})
-		.success((data)=>{
+		.then(function(response) {
 			//set token
-			console.trace(data);
-			AuthToken.setToken(data.token);
-			setActiveUser(data.name);
-			return data;
-		})
-		.error((err) => {
+			AuthToken.setToken(response.data.token);
+			setActiveUser(response.data.name);
+			return response.data;
+		},
+		function(err) {
 			return err;
 		});
 	}

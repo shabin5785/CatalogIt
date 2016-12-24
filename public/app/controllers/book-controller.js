@@ -5,23 +5,23 @@ angular.module('book-controller',[])
 	let vm = this;
 
 	Book.getAllBooks()
-	.success(function(data){
-		vm.mybooks = data;
-	})
-	.error(function(err){
+	.then(function(response){
+		vm.mybooks = response.data;
+	},
+	function(err){
 		console.log(err);
 		vm.error = "Error retrieving books";
-	})
+	});
 
 	vm.deleteBook = function(bookid){
 		Book.deleteBook(bookid)
-			.success(function(book){
+			.then(function(response){
 				$route.reload();
-			})
-			.error(function(err){
+			},
+			function(err){
 				console.log(err);
 				vm.error = 'Error deleting book';
-			})
+			});
 	}
 
 })
@@ -39,13 +39,13 @@ angular.module('book-controller',[])
 		vm.message = '';
 
 		Book.addBook(vm.bookdata)
-		.success(function(book){
+		.then(function(response){
 			vm.message = 'Book added succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error adding book. Try again';
-		})
+		});
 	}
 
 })
@@ -59,23 +59,23 @@ angular.module('book-controller',[])
 	let bookid = $routeParams.bookid;
 
 	Book.getSingleBook(bookid)
-	.success(function(bok){
-		vm.bookdata = bok;
-	})
-	.error(function(err){
+	.then(function(response){
+		vm.bookdata = response.data;
+	},
+	function(err){
 		console.log(err);
 		vm.error = 'Error retrieving book. Try again';
-	})
+	});
 
 	vm.processBook = function(){
 		Book.updateBook(bookid,vm.bookdata)
-		.success(function(bok){
+		.then(function(response){
 			vm.message = 'Book updated succesfully';
-		})
-		.error(function(err){
+		},
+		function(err){
 			console.log(err);
 			vm.error = 'Error updating Book. Please try again';
-		})
+		});
 	}
 
 })

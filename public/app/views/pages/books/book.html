@@ -11,12 +11,14 @@
 
 <br>
 <div class="row col-sm-6 col-sm-offset-3">
-	<form class="form-horizontal" ng-submit="book.processBook()">
+	<form class="form-horizontal" ng-submit="book.processBook()" name="bookform" novalidate>
 
-		<div class="form-group">
+		<div class="form-group" ng-class="{'has-error':bookform.title.$invalid && !bookform.title.$pristine}">
 			<label class="col-sm-2 control-label">Title</label>
 			<div class="col-sm-6">
-				<input type="text" class="form-control" ng-model="book.bookdata.title">
+				<input type="text" class="form-control" ng-model="book.bookdata.title"
+					name="title" required="true">
+				<p ng-show="bookform.title.$invalid && !bookform.title.$pristine" class="text-info">Enter Title</p>	
 			</div>
 		</div>
 
@@ -54,7 +56,7 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-6">
-				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="book.operation=='create'">Add Book</button>
+				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="book.operation=='create'" ng-disabled="bookform.$invalid">Add Book</button>
 				<button type="submit" class="btn btn-success btn-lg btn-block" ng-if="book.operation=='edit'">Update Book</button>
 			</div>
 		</div>
